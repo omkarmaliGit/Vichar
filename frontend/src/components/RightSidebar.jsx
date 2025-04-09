@@ -6,7 +6,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 const RightSidebar = () => {
   return (
     <>
-      <div className="w-[20%] pl-4 pt-1">
+      <div className="w-[25%] pl-5 pt-1">
         <div>
           <div className="px-4 py-2 bg-gray-100 rounded-full  w-full flex items-center gap-2 text-gray-800 font-semibold">
             <IoSearchSharp size={20} />
@@ -16,8 +16,8 @@ const RightSidebar = () => {
               className="bg-transparent outline-none border-none w-full"
             />
           </div>
-          <div className="py-4">
-            <h1 className="font-bold text-lg py-1">Who to follow</h1>
+          <div className="p-3 mt-4 border border-gray-200 rounded-3xl">
+            <h1 className="font-bold text-xl py-2">Who to follow</h1>
             <div>
               <WhoToFollow
                 name={"Akshara"}
@@ -49,7 +49,11 @@ const RightSidebar = () => {
               />
             </div>
           </div>
-          <div className="fixed bottom-7 right-0 w-20 ">
+          <div className="p-3 mt-4 border border-gray-200 rounded-3xl">
+            <h1 className="font-bold text-xl py-2">What’s happening</h1>
+            <div className="h-40"></div>
+          </div>
+          <div className="fixed bottom-6 right-6 w-20 ">
             <DotLottieReact
               src="https://lottie.host/d4ee8244-6959-4843-9734-82ac71f11ab5/gxXT2Z7thJ.lottie"
               loop

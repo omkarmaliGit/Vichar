@@ -16,7 +16,7 @@ const Vichar = () => {
           <div className="flex items-center">
             <h1 className="font-bold">Omkar</h1>
             <p className="text-gray-500 text-sm ml-1">@omkarmernstack</p>
-            <p className="text-gray-500 text-sm ml-1">. 1m</p>
+            <p className="text-gray-500 text-sm ml-1"> · 1m</p>
           </div>
           <div className="min-h-5 mt-3 mb-4">
             <p>
