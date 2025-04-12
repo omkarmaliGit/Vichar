@@ -110,7 +110,7 @@ const LeftSidebar = () => {
             </NavLink>
 
             <NavLink
-              to="/logout"
+              to="/login"
               className={({ isActive }) =>
                 `flex items-center mt-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
                   isActive ? "bg-blue-100 font-bold " : "hover:bg-gray-200"

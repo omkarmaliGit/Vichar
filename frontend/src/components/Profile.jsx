@@ -3,6 +3,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
 import Vichar from "./Vichar";
+import { PiSquaresFourLight, PiBookmarkSimpleLight } from "react-icons/pi";
 
 const Profile = () => {
   return (
@@ -59,8 +60,13 @@ const Profile = () => {
           </p>
         </div>
         <div className="mt-8">
-          <div className="border-b border-gray-200">
-            <h1 className="font-bold text-lg ml-8 mb-2">Posts</h1>
+          <div className="border-b border-gray-200 flex">
+            <h1 className="font-bold text-lg ml-8 mb-2 flex items-center gap-1">
+              <PiSquaresFourLight /> Posts
+            </h1>
+            <h1 className="font-bold text-lg ml-8 mb-2 flex items-center gap-1">
+              <PiBookmarkSimpleLight /> Saved
+            </h1>
           </div>
           <div className="mx-4">
             <Vichar />

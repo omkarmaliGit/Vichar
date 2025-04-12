@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "./Avatar";
-import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { GoBookmark, GoHeart, GoComment } from "react-icons/go";
+import { BsSend, BsDot } from "react-icons/bs";
+import { IoIosMore } from "react-icons/io";
 
-const Vichar = () => {
+const Vichar = ({ imageUrl }) => {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <div className="border-b border-gray-200">
       <div className="flex m-4">
@@ -13,10 +16,28 @@ const Vichar = () => {
           size={50}
         />
         <div className="ml-4 w-[90%]">
-          <div className="flex items-center">
-            <h1 className="font-bold">Omkar</h1>
-            <p className="text-gray-500 text-sm ml-1">@omkarmernstack</p>
-            <p className="text-gray-500 text-sm ml-1"> · 1m</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-0.5">
+              <h1 className="font-bold">Omkar</h1>
+              <p className="text-gray-500 text-sm ml-1">@omkarmernstack</p>
+              <BsDot className="pt-1" />
+              <p className="text-gray-500 text-sm ml-1">1m</p>
+            </div>
+            <div>
+              <IoIosMore size={24} />
+            </div>
+          </div>
+          <div className="">
+            {!imgError && imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={name}
+                className="w-full h-full object-cover pt-3"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              ""
+            )}
           </div>
           <div className="min-h-5 mt-3 mb-4">
             <p>
@@ -47,6 +68,12 @@ const Vichar = () => {
                 <GoComment size={24} />
               </div>
               <p className="text-gray-500">0 comments</p>
+            </div>
+            <div className="flex gap-2 items-center">
+              <div className="p-2 hover:bg-yellow-100 rounded-full cursor-pointer">
+                <BsSend size={20} />
+              </div>
+              <p className="text-gray-500">0 shares</p>
             </div>
             <div className="flex gap-2 items-center">
               <div className="p-2 hover:bg-blue-100 rounded-full cursor-pointer">

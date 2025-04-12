@@ -2,6 +2,7 @@ import React from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import WhoToFollow from "./WhoToFollow";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { IoIosMore } from "react-icons/io";
 
 const RightSidebar = () => {
   return (
@@ -51,7 +52,30 @@ const RightSidebar = () => {
           </div>
           <div className="p-3 mt-4 border border-gray-200 rounded-3xl">
             <h1 className="font-bold text-xl py-2">What’s happening</h1>
-            <div className="h-40"></div>
+            <div className="h-40 flex flex-col justify-center">
+              <div className="flex gap-2 py-2">
+                <img
+                  src="https://pbs.twimg.com/semantic_core_img/1875997496851263488/BLI4C75l?format=jpg&name=240x240"
+                  alt=""
+                  className="h-16 border rounded-lg"
+                />
+                <div>
+                  <h1 className="font-semibold text-sm">
+                    Khloé in Wonder Land
+                  </h1>
+                  <p className="text-sm text-gray-400">LIVE</p>
+                </div>
+              </div>
+              <div className="my-2 flex justify-between items-center">
+                <p className="text-sm text-gray-400">Trending in india</p>
+                <h1 className="text-md font-bold">#Modi</h1>
+                <p className="text-sm text-gray-400">297K posts</p>
+                <IoIosMore size={18} />
+              </div>
+              <div>
+                <p className="text-blue-500">Show more</p>
+              </div>
+            </div>
           </div>
           <div className="fixed bottom-6 right-6 w-20 ">
             <DotLottieReact
