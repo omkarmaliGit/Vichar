@@ -2,9 +2,10 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
-import Feed from "./Feed";
-import Profile from "./Profile";
+import Feed from "../components/Feed";
+import Profile from "../components/Profile";
 import Signup from "./Signup";
+import { Toaster } from "react-hot-toast";
 
 const Body = () => {
   const appRouter = createBrowserRouter([
@@ -13,7 +14,7 @@ const Body = () => {
       element: <Home />,
       children: [
         { path: "/", element: <Feed /> },
-        { path: "/profile", element: <Profile /> },
+        { path: "/profile/:id", element: <Profile /> },
       ],
     },
     { path: "/login", element: <Login /> },
@@ -23,6 +24,7 @@ const Body = () => {
   return (
     <div>
       <RouterProvider router={appRouter} />
+      <Toaster />
     </div>
   );
 };

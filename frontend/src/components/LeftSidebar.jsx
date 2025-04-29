@@ -9,9 +9,33 @@ import {
 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { PiChatsCircleDuotone } from "react-icons/pi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { USER_API_END_POINT } from "../utils/constant";
+import toast from "react-hot-toast";
+import { getMyProfile, getOtherUsers, getUser } from "../redux/userSlice";
 
 const LeftSidebar = () => {
+  const { user } = useSelector((store) => store.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${USER_API_END_POINT}/logout`);
+      console.log(res);
+      dispatch(getUser(null));
+      dispatch(getOtherUsers(null));
+      dispatch(getMyProfile(null));
+      navigate("/login");
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="w-[20%] flex flex-col pr-5 ">
@@ -81,12 +105,12 @@ const LeftSidebar = () => {
             </NavLink>
 
             <button className="px-4 py-2 mt-2 border-none text-md bg-blue-950 w-full rounded-full text-white font-bold">
-              Post
+              New Post
             </button>
           </div>
           <div>
             <NavLink
-              to="/profile"
+              to={`/profile/${user?._id}`}
               className={({ isActive }) =>
                 `flex items-center my-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
                   isActive ? "bg-blue-100 font-bold" : "hover:bg-gray-200"
@@ -110,7 +134,8 @@ const LeftSidebar = () => {
             </NavLink>
 
             <NavLink
-              to="/login"
+              // to="/login"
+              onClick={logoutHandler}
               className={({ isActive }) =>
                 `flex items-center mt-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
                   isActive ? "bg-blue-100 font-bold " : "hover:bg-gray-200"

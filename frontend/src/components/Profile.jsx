@@ -1,11 +1,58 @@
 import React from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
-import Avatar from "./Avatar";
-import Vichar from "./Vichar";
+import { Link, useParams } from "react-router-dom";
+import Avatar from "./subComponents/Avatar";
+import Vichar from "./subComponents/Vichar";
 import { PiSquaresFourLight, PiBookmarkSimpleLight } from "react-icons/pi";
+import useGetProfile from "../hooks/useGetProfile";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { USER_API_END_POINT } from "../utils/constant";
+import toast from "react-hot-toast";
+import { followingUpdate } from "../redux/userSlice";
+import { getRefresh } from "../redux/vicharSlice";
 
 const Profile = () => {
+  const { vichars } = useSelector((store) => store.vichar);
+  const { user } = useSelector((store) => store.user);
+  const { profile } = useSelector((store) => store.user);
+  const { id } = useParams();
+  useGetProfile(id);
+
+  const dispatch = useDispatch();
+
+  const followAndUnfollowHandler = async () => {
+    if (user.followings.includes(id)) {
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.post(`${USER_API_END_POINT}/unfollow/${id}`, {
+          id: user?._id,
+        });
+        console.log(res);
+        dispatch(followingUpdate(id));
+        dispatch(getRefresh());
+        toast.success(res.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.log(error);
+      }
+    } else {
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.post(`${USER_API_END_POINT}/unfollow/${id}`, {
+          id: user?._id,
+        });
+        console.log(res);
+        dispatch(followingUpdate(id));
+        dispatch(getRefresh());
+        toast.success(res.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <div className="">
       <div className="">
@@ -14,7 +61,7 @@ const Profile = () => {
             <IoArrowBackCircleOutline size={36} />
           </Link>
           <div>
-            <h1 className="font-bold text-sm">Omakr</h1>
+            <h1 className="font-bold text-sm">{profile?.name}</h1>
             <p className="text-sm text-gray-800">10 posts</p>
           </div>
         </div>
@@ -32,13 +79,22 @@ const Profile = () => {
             </div>
           </div>
           <div className="pt-5 w-[50%]">
-            <h1 className="font-bold text-2xl">Sneha Reddy</h1>
-            <p className="text-gray-500 ">@senhareddyvichar</p>
+            <h1 className="font-bold text-2xl">{profile?.name}</h1>
+            <p className="text-gray-500 ">{`@${profile?.username}`}</p>
           </div>
           <div className="pt-7">
-            <button className="border-gray-500 border rounded-full px-4 py-1 hover:bg-gray-200">
-              Edit Profile
-            </button>
+            {profile?._id === user?._id ? (
+              <button className="border-gray-500 border rounded-full px-4 py-1 hover:bg-gray-200">
+                Edit Profile
+              </button>
+            ) : (
+              <button
+                onClick={followAndUnfollowHandler}
+                className="border-gray-500 bg-gray-900 text-white  border rounded-full px-4 py-1 hover:bg-gray-700"
+              >
+                {user.followings.includes(id) ? "Following" : "Follow"}
+              </button>
+            )}
           </div>
         </div>
         <div className="px-8">
@@ -69,8 +125,20 @@ const Profile = () => {
             </h1>
           </div>
           <div className="mx-4">
-            <Vichar />
-            <Vichar />
+            {vichars
+              ?.filter((vichar) => vichar.userId === profile?._id)
+              .reverse()
+              .map((vichar) => {
+                return (
+                  <Vichar
+                    key={vichar?._id}
+                    vichar={vichar}
+                    imageUrl={
+                      "https://dreamlandmunnar.in/wp-content/uploads/2023/11/ezgif.com-gif-maker-3-1000x565.webp"
+                    }
+                  />
+                );
+              })}
           </div>
         </div>
       </div>
