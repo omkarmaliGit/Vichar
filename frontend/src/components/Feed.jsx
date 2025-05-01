@@ -18,7 +18,9 @@ const Feed = () => {
   // Logic to choose the right vichars based on the tab
   const filteredVichars =
     activeTab === "forYou"
-      ? vichars?.filter((vichar) => vichar.userId !== user?._id).reverse()
+      ? vichars
+          ?.filter((vichar) => vichar.userId !== user?._id)
+          .sort(() => Math.random() - 0.5)
       : followingVichars
           ?.filter((vichar) => vichar.userId !== user?._id)
           .reverse();
@@ -26,7 +28,7 @@ const Feed = () => {
   return (
     <div>
       {/* Navigation Tabs */}
-      <nav className="flex border-b border-gray-200">
+      <nav className="flex border-b border-gray-200 dark:border-gray-800">
         {tabs.map((tab) => (
           <button
             key={tab.id}

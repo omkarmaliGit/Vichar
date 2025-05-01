@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import ErrorBoundary from "./utils/ErrorBoundary";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
 
 function App() {
   let persistor = persistStore(store);
@@ -11,7 +13,11 @@ function App() {
     <>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <Body />
+          <ThemeProvider>
+            <ErrorBoundary>
+              <Body />
+            </ErrorBoundary>
+          </ThemeProvider>
         </PersistGate>
       </Provider>
     </>

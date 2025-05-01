@@ -9,15 +9,15 @@ const RightSidebar = ({ otherUsers }) => {
     <>
       <div className="w-[25%] h-[100%] pl-5 pt-1">
         <div className="h-[100%]">
-          <div className="px-4 py-2 bg-gray-100 rounded-full  w-full flex items-center gap-2 text-gray-800 font-semibold">
+          <div className="px-4 py-2 bg-gray-100 rounded-full  w-full flex items-center gap-2 text-gray-800 font-semibold dark:bg-black dark:text-white dark:placeholder-gray-400 dark:border dark:border-gray-800">
             <IoSearchSharp size={20} />
             <input
               type="text"
               placeholder="Search"
-              className="bg-transparent outline-none border-none w-full"
+              className="bg-transparent outline-none border-none w-full dark:bg-black dark:text-white dark:placeholder-gray-400"
             />
           </div>
-          <div className="p-3 mt-4 border border-gray-200 rounded-3xl h-[55%]">
+          <div className="p-3 mt-4 border border-gray-200 rounded-3xl h-[55%] dark:border-gray-800">
             <h1 className="font-bold text-xl py-2">Who to follow</h1>
             <div className="overflow-scroll scroll-container h-[90%] mx-2">
               {otherUsers?.map((user) => {
@@ -35,7 +35,7 @@ const RightSidebar = ({ otherUsers }) => {
               })}
             </div>
           </div>
-          <div className="p-3 mt-4 border border-gray-200 rounded-3xl ">
+          <div className="p-3 mt-4 border border-gray-200 rounded-3xl dark:border-gray-800 ">
             <h1 className="font-bold text-xl py-2">What’s happening</h1>
             <div className="h-40 flex flex-col justify-center mx-2">
               <div className="flex gap-2 py-2">

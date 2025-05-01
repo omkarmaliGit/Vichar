@@ -69,7 +69,7 @@ const WhoToFollow = ({ userId, name, userName, imgUrl }) => {
     <div>
       <div className="flex items-center w-full justify-between py-2">
         <Link to={`/profile/${userId}`}>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4">
             <Avatar name={name} imageUrl={imgUrl} size={45} />
             <div className="cursor-pointer">
               <h1 className="font-bold">{name}</h1>
@@ -81,11 +81,11 @@ const WhoToFollow = ({ userId, name, userName, imgUrl }) => {
           onClick={isFollowing ? unfollowHandler : followHandler}
           className={`${
             isFollowing
-              ? "bg-gray-700 text-white border"
-              : "bg-gray-900 text-white"
-          } hover:opacity-90 px-4 py-1 rounded-full border-gray-400`}
+              ? "bg-blue-100 text-black font-semibold hover:bg-red-200"
+              : "bg-blue-950 text-white hover:bg-green-900 "
+          } px-2 min-w-24 py-1.5 rounded-full border border-gray-800`}
         >
-          {isFollowing ? "Unfollow" : "Follow"}
+          {isFollowing ? "Following" : "Follow"}
         </button>
       </div>
     </div>

@@ -24,9 +24,9 @@ const Home = () => {
   useFollowingVichars(user?._id);
 
   return (
-    <div className="flex justify-between w-[97vw] h-[94vh] mx-6 my-5 ">
+    <div className="flex justify-between w-[100vw] h-[100vh] px-6 py-5  dark:bg-black dark:text-white">
       <LeftSidebar />
-      <div className="w-[55%] border border-gray-200 overflow-scroll scroll-container">
+      <div className="w-[55%] border border-gray-200 dark:border-gray-800 overflow-scroll scroll-container">
         <Outlet />
       </div>
       <RightSidebar otherUsers={otherUsers} />

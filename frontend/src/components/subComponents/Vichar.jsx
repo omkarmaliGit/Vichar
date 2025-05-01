@@ -61,7 +61,7 @@ const Vichar = ({ vichar, imageUrl }) => {
   };
 
   return (
-    <div className="border-b border-gray-200">
+    <div className="border-b border-gray-200 dark:border-gray-800">
       <div className="flex m-4">
         <Avatar
           name="Omkar Mali"

@@ -78,13 +78,13 @@ const Profile = () => {
               />
             </div>
           </div>
-          <div className="pt-5 w-[50%]">
+          <div className="pt-5 w-[45%]">
             <h1 className="font-bold text-2xl">{profile?.name}</h1>
             <p className="text-gray-500 ">{`@${profile?.username}`}</p>
           </div>
-          <div className="pt-7">
+          <div className="pt-7 ml-3">
             {profile?._id === user?._id ? (
-              <button className="border-gray-500 border rounded-full px-4 py-1 hover:bg-gray-200">
+              <button className="border-gray-500 border rounded-full px-4 py-1 hover:bg-gray-500">
                 Edit Profile
               </button>
             ) : (
@@ -105,10 +105,10 @@ const Profile = () => {
           <p className="text-gray-500">Joined June 2011</p>
           <div className="text-gray-500 flex gap-4">
             <p>
-              <b className="text-black">159</b> Following
+              <b className="text-black dark:text-white">159</b> Following
             </p>
             <p>
-              <b className="text-black">153.5K</b> Followers
+              <b className="text-black dark:text-white">153.5K</b> Followers
             </p>
           </div>
           <p className="text-sm text-gray-500">
@@ -116,7 +116,7 @@ const Profile = () => {
           </p>
         </div>
         <div className="mt-8">
-          <div className="border-b border-gray-200 flex">
+          <div className="border-b border-gray-200 flex dark:border-gray-800">
             <h1 className="font-bold text-lg ml-8 mb-2 flex items-center gap-1">
               <PiSquaresFourLight /> Posts
             </h1>

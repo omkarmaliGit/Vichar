@@ -48,12 +48,12 @@ const CreatePost = () => {
         <input
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full outline-none border-none text-lg ml-4"
+          className="w-full outline-none border-none text-lg ml-4 dark:bg-black dark:text-white dark:placeholder-gray-400"
           type="text"
           placeholder="What is happening?"
         />
       </div>
-      <div className="flex items-center justify-between px-6 pt-2 p-4 border-b border-gray-300">
+      <div className="flex items-center justify-between px-6 pt-2 p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center">
           <CiImageOn size="28px" />
         </div>

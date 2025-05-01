@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 // import logo from "../assets/logo-color.png";
-import logo from "../assets/logo-no-background - Copy.png";
+import logo from "../assets/logo.png";
+import logoDark from "../assets/logo_dark.png";
 import { IoMdHome, IoMdBookmark, IoMdSettings } from "react-icons/io";
 import {
   MdOutlineExplore,
@@ -15,8 +16,11 @@ import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
 import toast from "react-hot-toast";
 import { getMyProfile, getOtherUsers, getUser } from "../redux/userSlice";
+import { ThemeContext } from "../context/ThemeContext";
 
 const LeftSidebar = () => {
+  const { theme } = useContext(ThemeContext);
+
   const { user } = useSelector((store) => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,7 +44,11 @@ const LeftSidebar = () => {
     <>
       <div className="w-[20%] flex flex-col pr-5 ">
         <div className="flex flex-col justify-center ml-5 mt-1">
-          <img className="w-20" src={logo} alt="logo" />
+          <img
+            className="w-20"
+            src={theme === "light" ? logo : logoDark}
+            alt="logo"
+          />
         </div>
         <div className="mt-4 h-full flex flex-col justify-between">
           <div>
@@ -48,7 +56,9 @@ const LeftSidebar = () => {
               to="/"
               className={({ isActive }) =>
                 `flex items-center my-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
-                  isActive ? "bg-blue-100 font-bold" : "hover:bg-gray-200"
+                  isActive
+                    ? "bg-blue-100 font-bold dark:bg-gray-900"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`
               }
             >
@@ -60,7 +70,9 @@ const LeftSidebar = () => {
               to="/explore"
               className={({ isActive }) =>
                 `flex items-center my-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
-                  isActive ? "bg-blue-100 font-bold" : "hover:bg-gray-200"
+                  isActive
+                    ? "bg-blue-100 font-bold dark:bg-gray-900"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`
               }
             >
@@ -72,7 +84,9 @@ const LeftSidebar = () => {
               to="/notifications"
               className={({ isActive }) =>
                 `flex items-center my-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
-                  isActive ? "bg-blue-100 font-bold" : "hover:bg-gray-200"
+                  isActive
+                    ? "bg-blue-100 font-bold dark:bg-gray-900"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`
               }
             >
@@ -84,7 +98,9 @@ const LeftSidebar = () => {
               to="/messages"
               className={({ isActive }) =>
                 `flex items-center my-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
-                  isActive ? "bg-blue-100 font-bold " : "hover:bg-gray-200"
+                  isActive
+                    ? "bg-blue-100 font-bold dark:bg-gray-900"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`
               }
             >
@@ -96,7 +112,9 @@ const LeftSidebar = () => {
               to="/bookmarks"
               className={({ isActive }) =>
                 `flex items-center my-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
-                  isActive ? "bg-blue-100 font-bold " : "hover:bg-gray-200"
+                  isActive
+                    ? "bg-blue-100 font-bold dark:bg-gray-900"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`
               }
             >
@@ -113,7 +131,9 @@ const LeftSidebar = () => {
               to={`/profile/${user?._id}`}
               className={({ isActive }) =>
                 `flex items-center my-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
-                  isActive ? "bg-blue-100 font-bold" : "hover:bg-gray-200"
+                  isActive
+                    ? "bg-blue-100 font-bold dark:bg-gray-900"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`
               }
             >
@@ -125,7 +145,9 @@ const LeftSidebar = () => {
               to="/setting"
               className={({ isActive }) =>
                 `flex items-center my-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
-                  isActive ? "bg-blue-100 font-bold" : "hover:bg-gray-200"
+                  isActive
+                    ? "bg-blue-100 font-bold dark:bg-gray-900"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`
               }
             >
@@ -134,11 +156,13 @@ const LeftSidebar = () => {
             </NavLink>
 
             <NavLink
-              // to="/login"
+              to="/login"
               onClick={logoutHandler}
               className={({ isActive }) =>
                 `flex items-center mt-2 gap-2 px-4 py-2 rounded-full cursor-pointer ${
-                  isActive ? "bg-blue-100 font-bold " : "hover:bg-gray-200"
+                  isActive
+                    ? "bg-blue-100 font-bold dark:bg-gray-900"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`
               }
             >
