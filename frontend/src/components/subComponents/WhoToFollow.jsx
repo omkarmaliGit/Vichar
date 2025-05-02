@@ -12,7 +12,7 @@ const WhoToFollow = ({ userId, name, userName, imgUrl }) => {
   const id = userId;
   const dispatch = useDispatch();
 
-  let isFollowing = user.followings.includes(id);
+  let isFollowing = user?.followings?.includes(id);
 
   const followAndUnfollowHandler = async () => {
     if (isFollowing) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import Avatar from "../../components/subComponents/Avatar";
@@ -11,6 +11,7 @@ import { USER_API_END_POINT } from "../../utils/constant";
 import toast from "react-hot-toast";
 import { followingUpdate } from "../../redux/userSlice";
 import { getRefreshVichar } from "../../redux/vicharSlice";
+import EditProfile from "../../components/subComponents/EditProfile";
 
 const Profile = () => {
   const { vichars } = useSelector((store) => store.vichar);
@@ -18,11 +19,11 @@ const Profile = () => {
   const { profile } = useSelector((store) => store.user);
   const { id } = useParams();
   useGetProfile(id);
-
   const dispatch = useDispatch();
+  const [isEditing, setIsEditing] = useState(false);
 
   const followAndUnfollowHandler = async () => {
-    if (user.followings.includes(id)) {
+    if (user?.followings?.includes(id)) {
       try {
         axios.defaults.withCredentials = true;
         const res = await axios.post(`${USER_API_END_POINT}/unfollow/${id}`, {
@@ -84,7 +85,10 @@ const Profile = () => {
           </div>
           <div className="pt-7 ml-3">
             {profile?._id === user?._id ? (
-              <button className="border-gray-500 border rounded-full px-4 py-1 hover:bg-gray-500">
+              <button
+                className="border-gray-500 border rounded-full px-4 py-1 hover:bg-gray-500"
+                onClick={() => setIsEditing(true)}
+              >
                 Edit Profile
               </button>
             ) : (
@@ -134,6 +138,17 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {isEditing && (
+        <EditProfile
+          profile={profile}
+          onClose={() => setIsEditing(false)}
+          onSave={(updatedData) => {
+            console.log("Updated Data:", updatedData);
+            // Optionally call backend API here to update the user
+          }}
+        />
+      )}
     </div>
   );
 };

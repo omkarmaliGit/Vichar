@@ -223,3 +223,19 @@ export const unfollow = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const checkAuth = async (req, res) => {
+  try {
+    const userId = req.user; // from isAuth middleware
+    const user = users.find((u) => u.id === userId); // or fetch from DB
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to verify user" });
+  }
+};

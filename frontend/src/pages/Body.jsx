@@ -8,8 +8,11 @@ import Signup from "./Signup";
 import { Toaster } from "react-hot-toast";
 import Setting from "./homePages/Setting";
 import NotFoundPage from "./NotFoundPage";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 const Body = () => {
+  useAuthCheck();
+
   const appRouter = createBrowserRouter([
     {
       path: "/",

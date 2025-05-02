@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   bookmarks,
+  checkAuth,
   follow,
   getMyProfile,
   getOtherProfiles,
@@ -21,5 +22,7 @@ userRouter.route("/profile/:id").get(isAuth, getMyProfile);
 userRouter.route("/otherprofile/:id").get(isAuth, getOtherProfiles);
 userRouter.route("/follow/:id").post(isAuth, follow);
 userRouter.route("/unfollow/:id").post(isAuth, unfollow);
+
+userRouter.route("/check-auth").get(isAuth, checkAuth);
 
 export default userRouter;
