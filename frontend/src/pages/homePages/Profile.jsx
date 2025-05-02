@@ -1,16 +1,16 @@
 import React from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
-import Avatar from "./subComponents/Avatar";
-import Vichar from "./subComponents/Vichar";
+import Avatar from "../../components/subComponents/Avatar";
+import Vichar from "../../components/subComponents/Vichar";
 import { PiSquaresFourLight, PiBookmarkSimpleLight } from "react-icons/pi";
-import useGetProfile from "../hooks/useGetProfile";
+import useGetProfile from "../../hooks/useGetProfile";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { USER_API_END_POINT } from "../utils/constant";
+import { USER_API_END_POINT } from "../../utils/constant";
 import toast from "react-hot-toast";
-import { followingUpdate } from "../redux/userSlice";
-import { getRefresh } from "../redux/vicharSlice";
+import { followingUpdate } from "../../redux/userSlice";
+import { getRefreshVichar } from "../../redux/vicharSlice";
 
 const Profile = () => {
   const { vichars } = useSelector((store) => store.vichar);
@@ -30,7 +30,7 @@ const Profile = () => {
         });
         console.log(res);
         dispatch(followingUpdate(id));
-        dispatch(getRefresh());
+        dispatch(getRefreshVichar());
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -39,12 +39,12 @@ const Profile = () => {
     } else {
       try {
         axios.defaults.withCredentials = true;
-        const res = await axios.post(`${USER_API_END_POINT}/unfollow/${id}`, {
+        const res = await axios.post(`${USER_API_END_POINT}/follow/${id}`, {
           id: user?._id,
         });
         console.log(res);
         dispatch(followingUpdate(id));
-        dispatch(getRefresh());
+        dispatch(getRefreshVichar());
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -56,7 +56,7 @@ const Profile = () => {
   return (
     <div className="">
       <div className="">
-        <div className="w-[53.3%] flex items-center px-2 py-1 gap-2">
+        {/* <div className="w-[53.3%] flex items-center px-2 py-1 gap-2">
           <Link to={"/"}>
             <IoArrowBackCircleOutline size={36} />
           </Link>
@@ -64,7 +64,7 @@ const Profile = () => {
             <h1 className="font-bold text-sm">{profile?.name}</h1>
             <p className="text-sm text-gray-800">10 posts</p>
           </div>
-        </div>
+        </div> */}
         <div className="bg-[url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyaLOrbOHCW530SUaJ6GrHdzO3lwfyvyJ_iewHJhWGWzHD1NC3XAkUpZjEFbLyxrWFQfw&usqp=CAU')] bg-cover bg-center bg-no-repeat h-72"></div>
         <div className="w-full flex h-32">
           <div className="px-10 relative -top-24">
@@ -129,15 +129,7 @@ const Profile = () => {
               ?.filter((vichar) => vichar.userId === profile?._id)
               .reverse()
               .map((vichar) => {
-                return (
-                  <Vichar
-                    key={vichar?._id}
-                    vichar={vichar}
-                    imageUrl={
-                      "https://dreamlandmunnar.in/wp-content/uploads/2023/11/ezgif.com-gif-maker-3-1000x565.webp"
-                    }
-                  />
-                );
+                return <Vichar key={vichar?._id} vichar={vichar} />;
               })}
           </div>
         </div>

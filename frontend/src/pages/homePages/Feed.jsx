@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import CreatePost from "./subComponents/CreatePost";
-import Vichar from "./subComponents/Vichar";
+import CreatePost from "../../components/subComponents/CreatePost";
+import Vichar from "../../components/subComponents/Vichar";
 import { useSelector } from "react-redux";
 
 const Feed = () => {
@@ -20,10 +20,10 @@ const Feed = () => {
     activeTab === "forYou"
       ? vichars
           ?.filter((vichar) => vichar.userId !== user?._id)
-          .sort(() => Math.random() - 0.5)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       : followingVichars
           ?.filter((vichar) => vichar.userId !== user?._id)
-          .reverse();
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
     <div>
@@ -52,15 +52,7 @@ const Feed = () => {
       <div className="mt-4 space-y-4">
         {filteredVichars && filteredVichars.length > 0 ? (
           filteredVichars.map((vichar) => {
-            return (
-              <Vichar
-                key={vichar?._id}
-                vichar={vichar}
-                imageUrl={
-                  "https://dreamlandmunnar.in/wp-content/uploads/2023/11/ezgif.com-gif-maker-3-1000x565.webp"
-                }
-              />
-            );
+            return <Vichar key={vichar?._id} vichar={vichar} />;
           })
         ) : (
           <p className="text-center text-gray-500">No vichars to show here.</p>

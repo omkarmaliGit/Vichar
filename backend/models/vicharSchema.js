@@ -11,6 +11,7 @@ const vicharSchema = new mongoose.Schema(
       required: true,
     },
     userDetails: [],
+    images: { type: Array, default: [] },
   },
   { timestamps: true }
 );

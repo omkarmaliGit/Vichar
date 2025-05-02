@@ -6,7 +6,8 @@ import { getAllVichars } from "../redux/vicharSlice";
 
 const useGetMyVichars = (id) => {
   const dispatch = useDispatch();
-  const { refresh } = useSelector((store) => store.vichar);
+  const { refreshVichar } = useSelector((store) => store.vichar);
+  const { refreshUser } = useSelector((store) => store.user);
 
   useEffect(() => {
     const fetchMyVichars = async () => {
@@ -24,7 +25,7 @@ const useGetMyVichars = (id) => {
       }
     };
     fetchMyVichars();
-  }, [refresh]);
+  }, [refreshUser, refreshVichar]);
 };
 
 export default useGetMyVichars;

@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import Avatar from "./Avatar";
-import { GoBookmark, GoHeart, GoComment } from "react-icons/go";
+import {
+  GoBookmark,
+  GoHeart,
+  GoComment,
+  GoHeartFill,
+  GoBookmarkFill,
+} from "react-icons/go";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsSend, BsDot } from "react-icons/bs";
 import { IoIosMore } from "react-icons/io";
@@ -8,12 +14,22 @@ import axios from "axios";
 import { VICHAR_API_END_POINT } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { getRefresh } from "../../redux/vicharSlice";
+import { getRefreshVichar } from "../../redux/vicharSlice";
+// import { getRefreshUser } from "../../redux/userSlice";
 
-const Vichar = ({ vichar, imageUrl }) => {
-  const [imgError, setImgError] = useState(false);
+const Vichar = ({ vichar }) => {
+  // const [imgError, setImgError] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+
+  const [expanded, setExpanded] = useState(false);
+
+  // Split by line breaks
+  const lines = vichar?.description.split("\n");
+  const shouldTruncate = lines.length > 5;
+  const visibleLines = expanded ? lines : lines.slice(0, 5);
 
   const date = new Date(vichar?.createdAt);
   const formattedDate = date.toLocaleString("en-GB", {
@@ -36,7 +52,7 @@ const Vichar = ({ vichar, imageUrl }) => {
       if (res.data.success) {
         // console.log(vichar?.likes?.length);
         toast.success(res.data.message);
-        dispatch(getRefresh());
+        dispatch(getRefreshVichar());
       }
     } catch (error) {
       toast.success(error.response.data.message);
@@ -52,7 +68,7 @@ const Vichar = ({ vichar, imageUrl }) => {
 
       if (res.data.success) {
         toast.success(res.data.message);
-        dispatch(getRefresh());
+        dispatch(getRefreshVichar());
       }
     } catch (error) {
       toast.success(error.response.data.message);
@@ -81,27 +97,65 @@ const Vichar = ({ vichar, imageUrl }) => {
             </div>
           </div>
           <div className="mt-5 w-[92%]">
-            {!imgError && imageUrl ? (
-              <img
-                src={imageUrl}
-                alt={name}
-                className="w-full h-full object-cover border rounded-xl"
-                onError={() => setImgError(true)}
-              />
-            ) : (
-              ""
+            {vichar.images?.length > 0 && (
+              <div
+                className={`mt-4 rounded overflow-hidden transition-all duration-300 ease-in-out ${
+                  vichar.images.length === 1
+                    ? "w-full"
+                    : "grid grid-cols-1 sm:grid-cols-2 gap-1"
+                }`}
+              >
+                {vichar.images.map((img, index) => (
+                  <div
+                    key={index}
+                    className={`relative group cursor-pointer overflow-hidden rounded transition-all duration-300 ease-in-out ${
+                      vichar.images.length === 1
+                        ? "w-full h-auto"
+                        : hoveredIndex === null
+                        ? ""
+                        : hoveredIndex === index
+                        ? "z-10 scale-125"
+                        : "opacity-30 scale-75"
+                    }`}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <img
+                      src={img}
+                      alt={`media-${index}`}
+                      className={`w-full h-full object-cover transition-all duration-300 ease-in-out ${
+                        vichar.images.length === 1
+                          ? "aspect-auto"
+                          : "aspect-square sm:aspect-auto group-hover:scale-105"
+                      }`}
+                    />
+                  </div>
+                ))}
+              </div>
             )}
           </div>
           <div className="min-h-5 mt-3 mb-4 mx-auto">
-            <p>{vichar?.description}</p>
+            <p className="whitespace-pre-wrap">{visibleLines.join("\n")}</p>
+            {shouldTruncate && (
+              <button
+                className="mt-2 text-blue-500 hover:underline"
+                onClick={() => setExpanded(!expanded)}
+              >
+                {expanded ? "Show less" : "Show more"}
+              </button>
+            )}
           </div>
           <div className="flex justify-between">
             <div className="flex gap-2 items-center">
               <div
                 onClick={() => likeOrDislikeHandler(vichar?._id)}
-                className="p-2 hover:bg-pink-100 hover:text-pink-700 rounded-full cursor-pointer "
+                className="p-2 hover:bg-pink-100 hover:text-pink-700 rounded-full cursor-pointer transition-all duration-200"
               >
-                <GoHeart size={24} />
+                {vichar?.likes?.includes(user?._id) ? (
+                  <GoHeartFill size={24} className="text-pink-600" />
+                ) : (
+                  <GoHeart size={24} />
+                )}
               </div>
               <p className="text-gray-500">{vichar?.likes?.length} likes</p>
             </div>
@@ -119,7 +173,11 @@ const Vichar = ({ vichar, imageUrl }) => {
             </div>
             <div className="flex gap-2 items-center">
               <div className="p-2 hover:bg-blue-100 hover:text-blue-700 rounded-full cursor-pointer">
-                <GoBookmark size={24} />
+                {vichar?.bookmarks?.includes(user?._id) ? (
+                  <GoBookmarkFill size={24} className="text-blue-600" />
+                ) : (
+                  <GoBookmark size={24} />
+                )}
               </div>
               <p className="text-gray-500">0 bookmarks</p>
             </div>

@@ -2,12 +2,12 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
-import Feed from "../components/Feed";
-import Profile from "../components/Profile";
+import Feed from "./homePages/Feed";
+import Profile from "./homePages/Profile";
 import Signup from "./Signup";
 import { Toaster } from "react-hot-toast";
-import Setting from "../components/Setting";
-import NotFoundPage from "../components/NotFoundPage";
+import Setting from "./homePages/Setting";
+import NotFoundPage from "./NotFoundPage";
 
 const Body = () => {
   const appRouter = createBrowserRouter([

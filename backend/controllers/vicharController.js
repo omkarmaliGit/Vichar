@@ -1,14 +1,33 @@
 import userModel from "../models/userSchema.js";
 import vicharModel from "../models/vicharSchema.js";
 
+import { v2 as cloudinary } from "cloudinary";
+
 export const createVichar = async (req, res) => {
   try {
     const { description, id } = req.body;
+
     if (!description || !id) {
       return res.status(401).json({
         message: "Fields are required.",
         success: false,
       });
+    }
+
+    const images = req.files || [];
+
+    let imagesUrl = [];
+
+    if (images.length > 0) {
+      imagesUrl = await Promise.all(
+        images.map(async (item) => {
+          const result = await cloudinary.uploader.upload(item.path, {
+            resource_type: "image",
+            folder: `vichar_social/vichar`,
+          });
+          return result.secure_url;
+        })
+      );
     }
 
     const user = await userModel.findById(id).select("-password");
@@ -17,6 +36,7 @@ export const createVichar = async (req, res) => {
       description,
       userId: id,
       userDetails: user,
+      images: imagesUrl,
     });
 
     return res.status(201).json({
@@ -25,6 +45,10 @@ export const createVichar = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      message: "Server error",
+      success: false,
+    });
   }
 };
 

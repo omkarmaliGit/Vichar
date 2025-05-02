@@ -6,7 +6,8 @@ import { getFollowingVichars } from "../redux/vicharSlice";
 
 const useFollowingVichars = (id) => {
   const dispatch = useDispatch();
-  const { refresh } = useSelector((store) => store.vichar);
+  const { refreshVichar } = useSelector((store) => store.vichar);
+  const { refreshUser } = useSelector((store) => store.user);
 
   useEffect(() => {
     const fetchFollowingVichars = async () => {
@@ -18,14 +19,14 @@ const useFollowingVichars = (id) => {
             withCredentials: true,
           }
         );
-        console.log(res.data);
+        // console.log(res.data);
         dispatch(getFollowingVichars(res.data.followingVichars));
       } catch (error) {
         console.log(error);
       }
     };
     fetchFollowingVichars();
-  }, [refresh]);
+  }, [refreshUser, refreshVichar]);
 };
 
 export default useFollowingVichars;

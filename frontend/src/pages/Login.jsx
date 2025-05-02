@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../assets/logo-color.png";
+import logo from "../assets/logo-white-color.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "../utils/constant";
 import axios from "axios";

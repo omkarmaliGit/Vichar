@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema(
     },
     profileBio: { type: String },
     bookmarks: { type: Array, required: true, default: [] },
+    profileImage: { type: String },
+    coverImage: { type: String },
   },
   { timestamps: true }
 );

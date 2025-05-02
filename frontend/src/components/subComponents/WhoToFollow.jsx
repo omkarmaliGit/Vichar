@@ -5,63 +5,44 @@ import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { getRefresh } from "../../redux/userSlice";
+import { followingUpdate, getRefreshUser } from "../../redux/userSlice";
 
 const WhoToFollow = ({ userId, name, userName, imgUrl }) => {
   const { user } = useSelector((store) => store.user);
+  const id = userId;
   const dispatch = useDispatch();
 
-  const isFollowing = user?.followings?.includes(userId);
+  let isFollowing = user.followings.includes(id);
 
-  // const [isFollowing, setIsFollowing] = useState(false);
-
-  // useEffect(() => {
-  //   if (user?.followings?.includes(userId)) {
-  //     setIsFollowing(true);
-  //   } else {
-  //     setIsFollowing(false);
-  //   }
-  // }, [user?.followings, userId]);
-
-  // const isUserFollowing = useMemo(() => {
-  //   return user?.followings?.includes(userId);
-  // }, [user?.followings, userId]);
-
-  // console.log(userId, user?.followings, isUserFollowing);
-
-  const followHandler = async () => {
-    try {
-      const res = await axios.post(
-        `${USER_API_END_POINT}/follow/${userId}`,
-        { id: user?._id },
-        { withCredentials: true }
-      );
-
-      if (res.data.success) {
+  const followAndUnfollowHandler = async () => {
+    if (isFollowing) {
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.post(`${USER_API_END_POINT}/unfollow/${id}`, {
+          id: user?._id,
+        });
+        console.log(res);
+        dispatch(followingUpdate(id));
+        dispatch(getRefreshUser());
         toast.success(res.data.message);
-        // setIsFollowing(true);
-        dispatch(getRefresh()); // refresh user data
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.log(error);
       }
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Follow failed");
-    }
-  };
-
-  const unfollowHandler = async () => {
-    try {
-      const res = await axios.post(
-        `${USER_API_END_POINT}/unfollow/${userId}`,
-        { id: user?._id },
-        { withCredentials: true }
-      );
-
-      if (res.data.success) {
+    } else {
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.post(`${USER_API_END_POINT}/follow/${id}`, {
+          id: user?._id,
+        });
+        console.log(res);
+        dispatch(followingUpdate(id));
+        dispatch(getRefreshUser());
         toast.success(res.data.message);
-        // setIsFollowing(false);
-        dispatch(getRefresh()); // refresh user data
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.log(error);
       }
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Unfollow failed");
     }
   };
 
@@ -78,7 +59,7 @@ const WhoToFollow = ({ userId, name, userName, imgUrl }) => {
           </div>
         </Link>
         <button
-          onClick={isFollowing ? unfollowHandler : followHandler}
+          onClick={followAndUnfollowHandler}
           className={`${
             isFollowing
               ? "bg-blue-100 text-black font-semibold hover:bg-red-200"

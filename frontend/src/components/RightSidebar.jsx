@@ -20,19 +20,21 @@ const RightSidebar = ({ otherUsers }) => {
           <div className="p-3 mt-4 border border-gray-200 rounded-3xl h-[55%] dark:border-gray-800">
             <h1 className="font-bold text-xl py-2">Who to follow</h1>
             <div className="overflow-scroll scroll-container h-[90%] mx-2">
-              {otherUsers?.map((user) => {
-                return (
-                  <WhoToFollow
-                    key={user._id}
-                    userId={user._id}
-                    name={user.name}
-                    userName={`@${user.username}`}
-                    imgUrl={
-                      "https://s3.ap-south-1.amazonaws.com/modelfactory.in/upload/2023/Jan/12/blog_images/e46601974389fe0cab04c746fe55c4cf.jpg"
-                    }
-                  />
-                );
-              })}
+              {otherUsers
+                ?.map((user) => {
+                  return (
+                    <WhoToFollow
+                      key={user._id}
+                      userId={user._id}
+                      name={user.name}
+                      userName={`@${user.username}`}
+                      imgUrl={
+                        "https://s3.ap-south-1.amazonaws.com/modelfactory.in/upload/2023/Jan/12/blog_images/e46601974389fe0cab04c746fe55c4cf.jpg"
+                      }
+                    />
+                  );
+                })
+                .reverse()}
             </div>
           </div>
           <div className="p-3 mt-4 border border-gray-200 rounded-3xl dark:border-gray-800 ">

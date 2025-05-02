@@ -5,22 +5,22 @@ const vicharSlice = createSlice({
   initialState: {
     vichars: null,
     followingVichars: null,
-    refresh: false,
+    refreshVichar: false,
   },
   reducers: {
     getAllVichars: (state, action) => {
       state.vichars = action.payload;
     },
     getFollowingVichars: (state, action) => {
-      console.log("Dispatching to Redux:", action.payload);
+      // console.log("Dispatching to Redux:", action.payload);
       state.followingVichars = action.payload;
     },
-    getRefresh: (state) => {
-      state.refresh = !state.refresh;
+    getRefreshVichar: (state) => {
+      state.refreshVichar = !state.refreshVichar;
     },
   },
 });
 
-export const { getAllVichars, getFollowingVichars, getRefresh } =
+export const { getAllVichars, getFollowingVichars, getRefreshVichar } =
   vicharSlice.actions;
 export default vicharSlice.reducer;

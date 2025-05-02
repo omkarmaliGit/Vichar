@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../assets/logo-color.png";
+import logo from "../assets/logo-white-color.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
@@ -93,7 +93,7 @@ const Signup = () => {
             Sign Up
           </button>
           <div className="inline-flex gap-2 py-4">
-            Don't have an account?
+            Already have an account?
             <NavLink to="/login" className={"text-blue-900 font-semibold"}>
               Log in
             </NavLink>

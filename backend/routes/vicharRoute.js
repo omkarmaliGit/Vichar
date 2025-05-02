@@ -7,10 +7,13 @@ import {
   likeOrDislike,
 } from "../controllers/vicharController.js";
 import isAuth from "../config/auth.js";
+import upload from "../middleware/multer.js";
 
 const vicharRouter = Router();
 
-vicharRouter.route("/create").post(isAuth, createVichar);
+vicharRouter
+  .route("/create")
+  .post(isAuth, upload.array("images", 4), createVichar);
 vicharRouter.route("/delete/:id").delete(isAuth, deleteVichar);
 vicharRouter.route("/like/:id").put(isAuth, likeOrDislike);
 vicharRouter.route("/getallvichar/:id").get(isAuth, getAllVichar);
