@@ -19,8 +19,15 @@ const Profile = () => {
   const { profile } = useSelector((store) => store.user);
   const { id } = useParams();
   useGetProfile(id);
+
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
+
+  const date = new Date(profile?.createdAt);
+  const formattedDate = date.toLocaleString("en-GB", {
+    month: "long",
+    year: "numeric",
+  });
 
   const followAndUnfollowHandler = async () => {
     if (user?.followings?.includes(id)) {
@@ -29,7 +36,6 @@ const Profile = () => {
         const res = await axios.post(`${USER_API_END_POINT}/unfollow/${id}`, {
           id: user?._id,
         });
-        console.log(res);
         dispatch(followingUpdate(id));
         dispatch(getRefreshVichar());
         toast.success(res.data.message);
@@ -43,7 +49,6 @@ const Profile = () => {
         const res = await axios.post(`${USER_API_END_POINT}/follow/${id}`, {
           id: user?._id,
         });
-        console.log(res);
         dispatch(followingUpdate(id));
         dispatch(getRefreshVichar());
         toast.success(res.data.message);
@@ -102,22 +107,34 @@ const Profile = () => {
           </div>
         </div>
         <div className="px-8">
-          <p>
-            Frontend Development ⋆ UI Design ⋆ Freelance ⋆ Former Paralegal ⋆
-            Self-care 🌴🌊☕
-          </p>
-          <p className="text-gray-500">Joined June 2011</p>
+          <p className="whitespace-pre-wrap">{profile?.profileBio}</p>
+          <p className="text-gray-500">Joined {formattedDate}</p>
           <div className="text-gray-500 flex gap-4">
             <p>
-              <b className="text-black dark:text-white">159</b> Following
+              <b className="text-black dark:text-white">
+                {
+                  vichars.filter((vichar) => vichar.userId === profile?._id)
+                    .length
+                }
+              </b>{" "}
+              Posts
             </p>
             <p>
-              <b className="text-black dark:text-white">153.5K</b> Followers
+              <b className="text-black dark:text-white">
+                {profile?.followings?.length}
+              </b>{" "}
+              Following
+            </p>
+            <p>
+              <b className="text-black dark:text-white">
+                {profile?.followers?.length}
+              </b>{" "}
+              Followers
             </p>
           </div>
-          <p className="text-sm text-gray-500">
+          {/* <p className="text-sm text-gray-500">
             Not followed by anyone you’re following
-          </p>
+          </p> */}
         </div>
         <div className="mt-8">
           <div className="border-b border-gray-200 flex dark:border-gray-800">
@@ -130,7 +147,7 @@ const Profile = () => {
           </div>
           <div className="mx-4">
             {vichars
-              ?.filter((vichar) => vichar.userId === profile?._id)
+              ?.filter((vichar) => vichar?.userId === profile?._id)
               .reverse()
               .map((vichar) => {
                 return <Vichar key={vichar?._id} vichar={vichar} />;

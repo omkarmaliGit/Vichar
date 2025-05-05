@@ -12,7 +12,6 @@ const vicharSlice = createSlice({
       state.vichars = action.payload;
     },
     getFollowingVichars: (state, action) => {
-      // console.log("Dispatching to Redux:", action.payload);
       state.followingVichars = action.payload;
     },
     getRefreshVichar: (state) => {

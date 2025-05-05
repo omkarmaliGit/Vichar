@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   bookmarks,
-  checkAuth,
   follow,
   getMyProfile,
   getOtherProfiles,
@@ -9,6 +8,7 @@ import {
   Logout,
   Register,
   unfollow,
+  updateProfile,
 } from "../controllers/userController.js";
 import isAuth from "../config/auth.js";
 
@@ -22,7 +22,6 @@ userRouter.route("/profile/:id").get(isAuth, getMyProfile);
 userRouter.route("/otherprofile/:id").get(isAuth, getOtherProfiles);
 userRouter.route("/follow/:id").post(isAuth, follow);
 userRouter.route("/unfollow/:id").post(isAuth, unfollow);
-
-userRouter.route("/check-auth").get(isAuth, checkAuth);
+userRouter.route("/updateprofile/:id").put(isAuth, updateProfile);
 
 export default userRouter;

@@ -1,15 +1,40 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { USER_API_END_POINT } from "../../utils/constant";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { updateProfile } from "../../redux/userSlice";
 
 const EditProfile = ({ profile, onClose, onSave }) => {
   const [name, setName] = useState(profile?.name || "");
   const [username, setUsername] = useState(profile?.username || "");
-  const [bio, setBio] = useState(profile?.bio || "");
+  const [profileBio, setProfileBio] = useState(profile?.profileBio || "");
 
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedProfile = { ...profile, name, username, bio };
-    onSave(updatedProfile);
-    onClose();
+    try {
+      const res = await axios.put(
+        `${USER_API_END_POINT}/updateprofile/${profile?._id}`,
+        {
+          name,
+          username,
+          profileBio,
+        },
+        { withCredentials: true }
+      );
+
+      dispatch(updateProfile(res.data.user));
+      toast.success("Profile updated successfully");
+      const updatedProfile = { ...profile, name, username, profileBio };
+      onSave(updatedProfile);
+
+      onClose();
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || "Failed to update profile");
+    }
   };
 
   return (
@@ -48,8 +73,8 @@ const EditProfile = ({ profile, onClose, onSave }) => {
             <textarea
               className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:text-white"
               rows={3}
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
+              value={profileBio}
+              onChange={(e) => setProfileBio(e.target.value)}
             />
           </div>
           <div className="flex justify-end gap-3 mt-4">

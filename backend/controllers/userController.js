@@ -224,18 +224,34 @@ export const unfollow = async (req, res) => {
   }
 };
 
-export const checkAuth = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
-    const userId = req.user; // from isAuth middleware
-    const user = users.find((u) => u.id === userId); // or fetch from DB
-    if (!user) {
+    const userId = req.params.id;
+    const { name, username, profileBio, profileImage, coverImage } = req.body;
+
+    if (!name || !username) {
       return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+        .status(400)
+        .json({ message: "Required fields missing", success: false });
     }
 
-    res.status(200).json({ success: true, user });
+    const updatedUser = await userModel
+      .findByIdAndUpdate(
+        userId,
+        { name, username, profileBio, profileImage, coverImage },
+        { new: true, runValidators: true }
+      )
+      .select("-password");
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      success: true,
+      user: updatedUser,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to verify user" });
+    console.error("Update profile error:", error);
+    res
+      .status(500)
+      .json({ message: "Failed to update profile", success: false });
   }
 };

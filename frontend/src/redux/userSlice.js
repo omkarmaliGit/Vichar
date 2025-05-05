@@ -30,6 +30,12 @@ const userSlice = createSlice({
         state.user.followings.push(action.payload);
       }
     },
+    updateProfile: (state, action) => {
+      state.profile = action.payload;
+      if (state.user._id === action.payload._id) {
+        state.user = action.payload;
+      }
+    },
   },
 });
 
@@ -39,5 +45,6 @@ export const {
   getMyProfile,
   getRefreshUser,
   followingUpdate,
+  updateProfile,
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -13,8 +13,11 @@ const useGetProfile = (id) => {
         const res = await axios.get(`${USER_API_END_POINT}/profile/${id}`, {
           withCredentials: true,
         });
-        dispatch(getMyProfile(res.data.user));
+        if (res?.data?.user) {
+          dispatch(getMyProfile(res.data.user));
+        }
       } catch (error) {
+        console.log("Why i am here i m not understanding please help");
         console.log(error);
       }
     };
