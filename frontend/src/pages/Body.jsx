@@ -8,6 +8,8 @@ import Signup from "./Signup";
 import { Toaster } from "react-hot-toast";
 import Setting from "./homePages/Setting";
 import NotFoundPage from "./NotFoundPage";
+import Bookmarks from "./homePages/bookmarks";
+import ProtectedRoute from "../utils/ProtectedRoute";
 
 const Body = () => {
   const appRouter = createBrowserRouter([
@@ -18,6 +20,7 @@ const Body = () => {
         { path: "/", element: <Feed /> },
         { path: "/profile/:id", element: <Profile /> },
         { path: "/setting", element: <Setting /> },
+        { path: "/bookmarks", element: <Bookmarks /> },
       ],
     },
     { path: "/login", element: <Login /> },

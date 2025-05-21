@@ -4,6 +4,7 @@ const vicharSchema = new mongoose.Schema(
   {
     description: { type: String, required: true },
     likes: { type: Array, required: true, default: [] },
+    bookmarks: { type: Array, required: true, default: [] },
     comments: { type: Array, required: true, default: [] },
     userId: {
       type: mongoose.Schema.Types.ObjectId,

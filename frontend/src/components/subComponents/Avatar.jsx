@@ -9,7 +9,7 @@ const Avatar = ({
 }) => {
   const [imgError, setImgError] = useState(false);
 
-  const initials = name
+  const initials = (name || "")
     .split(" ")
     .map((n) => n[0])
     .join("")

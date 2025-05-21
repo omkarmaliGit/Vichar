@@ -15,6 +15,7 @@ import { VICHAR_API_END_POINT } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { getRefreshVichar } from "../../redux/vicharSlice";
+import { Link } from "react-router-dom";
 // import { getRefreshUser } from "../../redux/userSlice";
 
 const Vichar = ({ vichar }) => {
@@ -60,11 +61,30 @@ const Vichar = ({ vichar }) => {
     }
   };
 
+  const bookmarkHandler = async (id) => {
+    try {
+      const res = await axios.put(
+        `${VICHAR_API_END_POINT}/bookmark/${id}`,
+        { id: user?._id },
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        // console.log(vichar?.likes?.length);
+        toast.success(res.data.message);
+        dispatch(getRefreshVichar());
+      }
+    } catch (error) {
+      toast.success(error.response.data.message);
+      console.log(error);
+    }
+  };
+
   const deleteHandler = async (id) => {
     try {
       axios.defaults.withCredentials = true;
       const res = await axios.delete(`${VICHAR_API_END_POINT}/delete/${id}`);
-      console.log(res);
+      // console.log(res);
 
       if (res.data.success) {
         toast.success(res.data.message);
@@ -76,19 +96,28 @@ const Vichar = ({ vichar }) => {
     }
   };
 
+  // console.log(vichar?.userDetails[0]);
+
   return (
     <div className="border-b border-gray-200 dark:border-gray-800">
       <div className="flex m-4">
-        <Avatar
-          name="Omkar Mali"
-          imageUrl="https://s3.ap-south-1.amazonaws.com/modelfactory.in/upload/2023/Jan/12/blog_images/e46601974389fe0cab04c746fe55c4cf.jpg"
-          size={50}
-        />
+        <Link to={`/profile/${vichar?.userId}`}>
+          <Avatar
+            name={vichar?.userDetails[0]?.name}
+            imageUrl={vichar?.userDetails[0]?.profileImage}
+            size={50}
+          />
+        </Link>
         <div className="ml-4 w-[90%]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-0.5">
-              <h1 className="font-bold">{vichar?.userDetails[0]?.name}</h1>
-              <p className="text-gray-700 text-sm ml-1">{`@${vichar?.userDetails[0]?.username}`}</p>
+              <Link
+                to={`/profile/${vichar?.userId}`}
+                className="flex items-center gap-0.5"
+              >
+                <h1 className="font-bold">{vichar?.userDetails[0]?.name}</h1>
+                <p className="text-gray-700 text-sm ml-1">{`@${vichar?.userDetails[0]?.username}`}</p>
+              </Link>
               <BsDot className="pt-1" />
               <p className="text-gray-500 text-xs ml-1">{formattedDate}</p>
             </div>
@@ -172,14 +201,19 @@ const Vichar = ({ vichar }) => {
               <p className="text-gray-500">0 shares</p>
             </div>
             <div className="flex gap-2 items-center">
-              <div className="p-2 hover:bg-blue-100 hover:text-blue-700 rounded-full cursor-pointer">
+              <div
+                onClick={() => bookmarkHandler(vichar?._id)}
+                className="p-2 hover:bg-blue-100 hover:text-blue-700 rounded-full cursor-pointer"
+              >
                 {vichar?.bookmarks?.includes(user?._id) ? (
                   <GoBookmarkFill size={24} className="text-blue-600" />
                 ) : (
                   <GoBookmark size={24} />
                 )}
               </div>
-              <p className="text-gray-500">0 bookmarks</p>
+              <p className="text-gray-500">
+                {vichar?.bookmarks?.length} bookmarks
+              </p>
             </div>
             {user?._id === vichar?.userId && (
               <div className="flex gap-2 items-center">

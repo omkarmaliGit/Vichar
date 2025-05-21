@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  bookmarks,
   createVichar,
   deleteVichar,
   getAllVichar,
@@ -16,6 +17,7 @@ vicharRouter
   .post(isAuth, upload.array("images", 4), createVichar);
 vicharRouter.route("/delete/:id").delete(isAuth, deleteVichar);
 vicharRouter.route("/like/:id").put(isAuth, likeOrDislike);
+vicharRouter.route("/bookmark/:id").put(isAuth, bookmarks);
 vicharRouter.route("/getallvichar/:id").get(isAuth, getAllVichar);
 vicharRouter.route("/getfollowingvichar/:id").get(isAuth, getFollowingVichar);
 

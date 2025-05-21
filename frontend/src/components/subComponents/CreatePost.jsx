@@ -85,11 +85,7 @@ const CreatePost = () => {
     <div className="w-[100%]">
       <div className="flex items-center p-4">
         <div>
-          <Avatar
-            name="Omkar Mali"
-            imageUrl="https://s3.ap-south-1.amazonaws.com/modelfactory.in/upload/2023/Jan/12/blog_images/e46601974389fe0cab04c746fe55c4cf.jpg"
-            size={50}
-          />
+          <Avatar name={user?.name} imageUrl={user?.profileImage} size={50} />
         </div>
         <textarea
           ref={textareaRef}

@@ -77,7 +77,7 @@ export const likeOrDislike = async (req, res) => {
         $pull: { likes: LoggedInUserId },
       });
       return res.status(200).json({
-        message: "User disliked your vichar.",
+        message: `Disliked vichar.`,
         success: true,
       });
     } else {
@@ -85,7 +85,36 @@ export const likeOrDislike = async (req, res) => {
         $push: { likes: LoggedInUserId },
       });
       return res.status(200).json({
-        message: "User liked your vichar.",
+        message: "Liked vichar.",
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const bookmarks = async (req, res) => {
+  try {
+    const LoggedInUserId = req.body.id;
+    const vicharId = req.params.id;
+
+    const vichar = await vicharModel.findById(vicharId);
+
+    if (vichar.bookmarks.includes(LoggedInUserId)) {
+      await vicharModel.findByIdAndUpdate(vicharId, {
+        $pull: { bookmarks: LoggedInUserId },
+      });
+      return res.status(200).json({
+        message: "Removed from bookmarks.",
+        success: true,
+      });
+    } else {
+      await vicharModel.findByIdAndUpdate(vicharId, {
+        $push: { bookmarks: LoggedInUserId },
+      });
+      return res.status(200).json({
+        message: "Saved to bookmarks.",
         success: true,
       });
     }

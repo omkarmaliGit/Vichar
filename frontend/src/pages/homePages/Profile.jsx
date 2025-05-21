@@ -71,15 +71,24 @@ const Profile = () => {
             <p className="text-sm text-gray-800">10 posts</p>
           </div>
         </div> */}
-        <div className="bg-[url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyaLOrbOHCW530SUaJ6GrHdzO3lwfyvyJ_iewHJhWGWzHD1NC3XAkUpZjEFbLyxrWFQfw&usqp=CAU')] bg-cover bg-center bg-no-repeat h-72"></div>
-        <div className="w-full flex h-32">
+        <div
+          style={{
+            backgroundImage: profile?.coverImage
+              ? `url(${profile.coverImage})`
+              : undefined,
+          }}
+          className={`bg-cover bg-center bg-no-repeat h-72 ${
+            !profile?.coverImage ? "hidden" : ""
+          }`}
+        ></div>
+        <div
+          className={`w-full flex h-32 ${!profile?.coverImage ? "mt-28" : ""}`}
+        >
           <div className="px-10 relative -top-24">
             <div className="p-1 bg-white inline-block rounded-full">
               <Avatar
-                name={"Sneha Reddy"}
-                imageUrl={
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgufd6O_cyhVZrKhqOcv4Ew2c-IYGcIr8KL5u9Gg3Mt4OqY8v5-l6-pbwdftTGonX162c&usqp=CAU"
-                }
+                name={profile?.name}
+                imageUrl={profile?.profileImage}
                 size={200}
               />
             </div>
@@ -157,14 +166,7 @@ const Profile = () => {
       </div>
 
       {isEditing && (
-        <EditProfile
-          profile={profile}
-          onClose={() => setIsEditing(false)}
-          onSave={(updatedData) => {
-            console.log("Updated Data:", updatedData);
-            // Optionally call backend API here to update the user
-          }}
-        />
+        <EditProfile profile={profile} onClose={() => setIsEditing(false)} />
       )}
     </div>
   );

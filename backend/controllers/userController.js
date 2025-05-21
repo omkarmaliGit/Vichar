@@ -1,10 +1,11 @@
 import userModel from "../models/userSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
 
 export const Register = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
 
     const { name, username, email, phone, password } = req.body;
 
@@ -76,8 +77,13 @@ export const Login = async (req, res) => {
     });
 
     return res
-      .status(201)
-      .cookie("token", token, { expiresIn: "1d", httpOnly: true })
+      .status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax", // or 'Strict'/'None' based on frontend/backend domains
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+      })
       .json({
         message: `Welcome back ${user.name}`,
         user,
@@ -85,43 +91,25 @@ export const Login = async (req, res) => {
       });
   } catch (error) {
     console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false });
   }
 };
 
 export const Logout = (req, res) => {
-  return res.cookie("token", "", { expiresIn: new Date(Date.now()) }).json({
-    message: "user logged out successfully",
-    success: true,
-  });
-};
-
-export const bookmarks = async (req, res) => {
-  try {
-    const LoggedInUserId = req.body.id;
-    const vicharId = req.params.id;
-
-    const user = await userModel.findById(LoggedInUserId);
-
-    if (user.bookmarks.includes(vicharId)) {
-      await userModel.findByIdAndUpdate(LoggedInUserId, {
-        $pull: { bookmarks: vicharId },
-      });
-      return res.status(200).json({
-        message: "Removed from bookmarks.",
-        success: true,
-      });
-    } else {
-      await userModel.findByIdAndUpdate(LoggedInUserId, {
-        $push: { bookmarks: vicharId },
-      });
-      return res.status(200).json({
-        message: "Saved to bookmarks.",
-        success: true,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  return res
+    .status(200)
+    .cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: "Lax",
+      secure: process.env.NODE_ENV === "production",
+    })
+    .json({
+      message: "user logged out successfully",
+      success: true,
+    });
 };
 
 export const getMyProfile = async (req, res) => {
@@ -227,7 +215,23 @@ export const unfollow = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { name, username, profileBio, profileImage, coverImage } = req.body;
+
+    // console.log(userId);
+    // console.log(req.body, req.files);
+
+    if (!req.body) {
+      return res.status(400).json({ error: "Request body is missing" });
+    }
+
+    // console.log(req.body, req.files);
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const { name, username, profileBio } = req.body;
 
     if (!name || !username) {
       return res
@@ -235,13 +239,49 @@ export const updateProfile = async (req, res) => {
         .json({ message: "Required fields missing", success: false });
     }
 
+    // console.log(`name, username, profileBio = ${(name, username, profileBio)}`);
+
+    const profileImage = req.files?.profileImage?.[0];
+    let profileImageUrl = "";
+    if (profileImage) {
+      const result = await cloudinary.uploader.upload(profileImage.path, {
+        resource_type: "image",
+        folder: `vichar_social/user`,
+      });
+      profileImageUrl = result.secure_url;
+    }
+
+    const coverImage = req.files?.coverImage?.[0];
+    let coverImageUrl = "";
+    if (coverImage) {
+      const result = await cloudinary.uploader.upload(coverImage.path, {
+        resource_type: "image",
+        folder: `vichar_social/user`,
+      });
+      coverImageUrl = result.secure_url;
+    }
+
+    // console.log(
+    //   `profileImageUrl, coverImageUrl = ${
+    //     (profileImageUrl, "euuuuuuuuuuueuuuuuuu", coverImageUrl)
+    //   }`
+    // );
+
     const updatedUser = await userModel
       .findByIdAndUpdate(
         userId,
-        { name, username, profileBio, profileImage, coverImage },
+        {
+          name: name,
+          username: username,
+          profileBio: profileBio,
+          profileImage: profileImageUrl,
+          coverImage: coverImageUrl,
+        },
         { new: true, runValidators: true }
       )
       .select("-password");
+
+    // console.log(`in last`);
 
     res.status(200).json({
       message: "Profile updated successfully",

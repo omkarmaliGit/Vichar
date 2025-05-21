@@ -28,9 +28,7 @@ const RightSidebar = ({ otherUsers }) => {
                       userId={user._id}
                       name={user.name}
                       userName={`@${user.username}`}
-                      imgUrl={
-                        "https://s3.ap-south-1.amazonaws.com/modelfactory.in/upload/2023/Jan/12/blog_images/e46601974389fe0cab04c746fe55c4cf.jpg"
-                      }
+                      imgUrl={user.profileImage}
                     />
                   );
                 })

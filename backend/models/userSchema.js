@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema(
       default: [],
     },
     profileBio: { type: String },
-    bookmarks: { type: Array, required: true, default: [] },
     profileImage: { type: String },
     coverImage: { type: String },
   },

@@ -65,10 +65,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button
-            // type="submit"
-            className=" bg-blue-900 text-white my-7 border border-gray-300 px-20 py-2 rounded-3xl mb-2 hover:bg-blue-950"
-          >
+          <button className=" bg-blue-900 text-white my-7 border border-gray-300 px-20 py-2 rounded-3xl mb-2 hover:bg-blue-950">
             Log in
           </button>
           <div className="inline-flex gap-2 py-4">
