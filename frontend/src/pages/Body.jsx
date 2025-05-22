@@ -8,7 +8,7 @@ import Signup from "./Signup";
 import { Toaster } from "react-hot-toast";
 import Setting from "./homePages/Setting";
 import NotFoundPage from "./NotFoundPage";
-import Bookmarks from "./homePages/bookmarks";
+import Bookmarks from "./homePages/Bookmarks";
 import ProtectedRoute from "../utils/ProtectedRoute";
 
 const Body = () => {
