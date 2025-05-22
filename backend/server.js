@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/vichar", vicharRouter);
 
-app.get("/home", (req, res) => {
+app.get("/", (req, res) => {
   res.send("server API started");
 });
 
