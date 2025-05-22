@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend origin
+    origin: "http://localhost:5173" || "https://vicharsocial.vercel.app", // frontend origin
     credentials: true, // if you're using cookies
   })
 );
