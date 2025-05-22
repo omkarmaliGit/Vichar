@@ -16,15 +16,23 @@ connectCloudinary();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// const allowedOrigins = [
-//   "https://vicharsocial.vercel.app",
-//   "http://localhost:5173",
-// ];
-app.use(cors());
-// {
-//   origin: allowedOrigins, // frontend origin
-//   credentials: true, // if you're using cookies
-// }
+const allowedOrigins = [
+  "https://vicharsocial.vercel.app",
+  "http://localhost:5173",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 
