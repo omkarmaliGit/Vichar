@@ -80,8 +80,8 @@ export const Login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax", // or 'Strict'/'None' based on frontend/backend domains
+        secure: true,
+        sameSite: "None",
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
       })
       .json({
@@ -104,7 +104,7 @@ export const Logout = (req, res) => {
       httpOnly: true,
       expires: new Date(0),
       sameSite: "Lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
     })
     .json({
       message: "user logged out successfully",
