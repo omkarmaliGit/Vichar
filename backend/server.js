@@ -13,8 +13,14 @@ connectDB();
 connectCloudinary();
 
 app.use(express.json());
-app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  cors({
+    origin: "https://vicharsocial.vercel.app",
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 
